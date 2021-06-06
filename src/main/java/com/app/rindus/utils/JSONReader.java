@@ -31,7 +31,6 @@ public class JSONReader {
 		}
 	}
 
-	// TODO: revisar uso
 	public static JSONObject readObjectJsonFromUrl(String url) throws IOException, JSONException {
 		InputStream is = new URL(url).openStream();
 		try {

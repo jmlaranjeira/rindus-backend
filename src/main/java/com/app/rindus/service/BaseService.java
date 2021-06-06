@@ -3,6 +3,7 @@ package com.app.rindus.service;
 import com.app.rindus.utils.JSONReader;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,14 +22,30 @@ public abstract class BaseService<D> {
 		return this.url;
 	}
 
-	public String save(D postDTO) {
-		JSONObject postJSON = new JSONObject(postDTO);
-		return this.send("POST", postJSON);
+	public String add(D dto) {
+		JSONObject postJSON = new JSONObject(dto);
+		return this.send(RequestMethod.POST.name(), postJSON);
 	}
 
-	public String update(D putDTO) {
-		JSONObject postJSON = new JSONObject(putDTO);
-		return this.send("PUT", postJSON);
+	public String update(D dto)  {
+		JSONObject putJSON = new JSONObject(dto);
+		return this.send(RequestMethod.PUT.name(), putJSON);
+	}
+
+	public String findByID(final Integer id) {
+		JSONObject resp = this.findObjectByID(id);
+		if (resp == null) return "Endpoint not found";
+		if (resp.length() < 1) return "No data available";
+		return resp.toString();
+	}
+
+	public JSONObject findObjectByID(final Integer id) {
+		try {
+			return JSONReader.readObjectJsonFromUrl(this.baseUrL() + "/" + id);
+		} catch (IOException ex) {
+			System.err.println(ex.getMessage());
+			return null;
+		}
 	}
 
 	public String findAll() {
@@ -45,12 +62,14 @@ public abstract class BaseService<D> {
 	private String send(String method, JSONObject jsonObject) {
 		byte[] out = jsonObject.toString().getBytes(StandardCharsets.UTF_8);
 		int length = out.length;
+		String baseUrL = this.baseUrL();
+		if( RequestMethod.PUT.name().compareTo(method) == 0 ) baseUrL += "/" + jsonObject.get("id");
 
 		try {
-			URL url = new URL(this.baseUrL());
+			URL url = new URL(baseUrL);
 			URLConnection con = url.openConnection();
 			HttpURLConnection http = (HttpURLConnection) con;
-			http.setRequestMethod(method); // PUT is another valid option
+			http.setRequestMethod(method);
 			http.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 			http.setDoOutput(true);
 			http.setFixedLengthStreamingMode(length);

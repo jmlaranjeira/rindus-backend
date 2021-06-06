@@ -26,11 +26,12 @@ public class PostRestService {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	String post(@RequestBody final PostDTO request) {
-		return this.postService.save(request);
+		return this.postService.add(request);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	String put() {
-		return "Hello from put";
+	@ResponseBody
+	String put(@RequestBody final PostDTO request) {
+		return this.postService.update(request);
 	}
 }
