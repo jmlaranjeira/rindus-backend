@@ -8,8 +8,17 @@ import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
 
+/**
+ * Class Utils for Read JSON Requests
+ */
 public class JSONReader {
 
+	/**
+	 * Common method for read all lines
+	 * @param rd
+	 * @return
+	 * @throws IOException
+	 */
 	private static String readAll(Reader rd) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		int cp;
@@ -19,6 +28,13 @@ public class JSONReader {
 		return sb.toString();
 	}
 
+	/**
+	 * This methods return a Array JSONObjects -- JSONArray
+	 * @param url
+	 * @return
+	 * @throws IOException
+	 * @throws JSONException
+	 */
 	public static JSONArray readJsonFromUrl(String url) throws IOException, JSONException {
 		InputStream is = new URL(url).openStream();
 		try {
@@ -31,6 +47,13 @@ public class JSONReader {
 		}
 	}
 
+	/**
+	 * This method return a single JSONObject
+	 * @param url
+	 * @return
+	 * @throws IOException
+	 * @throws JSONException
+	 */
 	public static JSONObject readObjectJsonFromUrl(String url) throws IOException, JSONException {
 		InputStream is = new URL(url).openStream();
 		try {

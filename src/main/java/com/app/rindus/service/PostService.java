@@ -14,6 +14,12 @@ public class PostService extends BaseService<PostDTO> {
 		return super.baseUrL() + this.url;
 	}
 
+	/**
+	 * The update method is Override because if you don't complete all fields, Typicode don't send you the rest of the values.
+	 * The object saved in the database is recovered and after all its edited fields are setted.
+	 * @param dto
+	 * @return
+	 */
 	@Override
 	public String update(PostDTO dto) {
 		Gson gson = new Gson();

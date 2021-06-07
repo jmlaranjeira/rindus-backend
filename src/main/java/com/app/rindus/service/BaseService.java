@@ -14,6 +14,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Abstract Class with all general methods
+ * @param <D>
+ */
 public abstract class BaseService<D> {
 
 	private String url = "https://my-json-server.typicode.com/jmlaranjeira/typicode/";
@@ -22,16 +26,31 @@ public abstract class BaseService<D> {
 		return this.url;
 	}
 
+	/**
+	 * Add method
+	 * @param dto
+	 * @return
+	 */
 	public String add(D dto) {
 		JSONObject postJSON = new JSONObject(dto);
 		return this.send(RequestMethod.POST.name(), postJSON);
 	}
 
+	/**
+	 * Update method
+	 * @param dto
+	 * @return
+	 */
 	public String update(D dto)  {
 		JSONObject putJSON = new JSONObject(dto);
 		return this.send(RequestMethod.PUT.name(), putJSON);
 	}
 
+	/**
+	 * Find By ID
+	 * @param id
+	 * @return String from JSONObject
+	 */
 	public String findByID(final Integer id) {
 		JSONObject resp = this.findObjectByID(id);
 		if (resp == null) return "Endpoint not found";
@@ -39,6 +58,11 @@ public abstract class BaseService<D> {
 		return resp.toString();
 	}
 
+	/**
+	 * find Object By ID
+	 * @param id
+	 * @return JSONObject
+	 */
 	public JSONObject findObjectByID(final Integer id) {
 		try {
 			return JSONReader.readObjectJsonFromUrl(this.baseUrL() + "/" + id);
@@ -48,6 +72,10 @@ public abstract class BaseService<D> {
 		}
 	}
 
+	/**
+	 * Find all results
+	 * @return Array JSONObject (JSONArray)
+	 */
 	public String findAll() {
 		try {
 			JSONArray resp = JSONReader.readJsonFromUrl(this.baseUrL());
