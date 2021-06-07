@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(value = "/author", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
